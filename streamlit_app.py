@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import joblib
+from sklearn.preprocessing import LabelEncoder
 
 # Load the trained model
 model = joblib.load("fraud_model.pkl")  # Ensure you have a trained model saved as 'fraud_model.pkl'
@@ -15,6 +16,16 @@ if uploaded_file is not None:
     data = pd.read_csv(uploaded_file)
     st.write("Preview of Uploaded Data:")
     st.dataframe(data.head())
+
+    # Identify categorical columns
+    categorical_cols = data.select_dtypes(include=['object']).columns
+
+    # Apply Label Encoding to categorical columns
+    if len(categorical_cols) > 0:
+        label_encoders = {}
+        for col in categorical_cols:
+            label_encoders[col] = LabelEncoder()
+            data[col] = label_encoders[col].fit_transform(data[col])
 
     if st.button("Predict Fraudulent Transactions"):
         predictions = model.predict(data)

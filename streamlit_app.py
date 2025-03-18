@@ -46,4 +46,5 @@ if uploaded_file is not None:
         st.dataframe(data)
 
         # Provide download option
-        st.download_button("Download Predictions", data.to_csv(index=False), "fraud_prediction
+        st.download_button("Download Predictions", data.to_csv(index=False), "fraud_prediction.csv",)
+                           
